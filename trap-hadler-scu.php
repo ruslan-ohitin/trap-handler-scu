@@ -36,6 +36,10 @@ if ($read_handle = fopen('php://stdin', 'r')) {
 	}
 	// Read client request
 	if ($request = fread($read_handle, $request_buffer_size)) {
+		// TODO: Get switch MAC
+
+		// TODO: Get protocol version
+
 		// Get trap message
 		preg_match('/[\w\d\s\-\(\)\.]+$/', $request, $matches);
 		if ($matches) {
@@ -50,7 +54,7 @@ if ($read_handle = fopen('php://stdin', 'r')) {
 		} else {
 			$trap_message = '';
 		}
-	
+		
 		if ($logging) {
 			write_log($trap_message);
 		}
@@ -58,7 +62,7 @@ if ($read_handle = fopen('php://stdin', 'r')) {
 		if ($debug_logging) {
 			write_log('Handle request, size('.strlen($request).")\t-> ".$trap_message);
 		}
-
+		
 		if ($dump_requests) {
 			file_put_contents($dump_request_file, $request, FILE_APPEND);
 		}
