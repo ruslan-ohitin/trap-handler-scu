@@ -21,11 +21,17 @@ function write_log($message)
 {
 	global $log_file, $logging, $req_id;
 	if ($logging)
-	{$logging = (file_put_contents($log_file, date('Y-m-d H:i:s  ').'['.$req_id.' '.sprintf('%-14s', $_SERVER['REMOTE_HOST']).'] '.$message."\n", FILE_APPEND) !== false);}
+	{
+		$logging = (file_put_contents($log_file, date('Y-m-d H:i:s  ').'['.$req_id.' '.sprintf('%-14s', $_SERVER['REMOTE_HOST']).'] '.$message."\n", FILE_APPEND) !== false);
+	}
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if ($debug_logging) {write_log('Start');}
+if ($debug_logging) 
+{
+	write_log('Start');
+}
+
 if ($read_handle = fopen('php://stdin', 'r'))
 {
 	if (($dump_requests) && (!is_dir($dump_dir))) 
@@ -48,18 +54,39 @@ if ($read_handle = fopen('php://stdin', 'r'))
 						)
 					)
 				);
-		} else {$trap_message = '';}
-		if ($logging) {write_log($trap_message);}
-		if ($debug_logging) {write_log('Handle request, size('.strlen($request).")\t-> ".$trap_message);}
-		if ($dump_requests) {file_put_contents($dump_request_file, $request, FILE_APPEND);}
+		} 
+		else 
+		{
+			$trap_message = '';
+		}
+	
+		if ($logging) {
+			write_log($trap_message);
+		}
+
+		if ($debug_logging) {
+			write_log('Handle request, size('.strlen($request).")\t-> ".$trap_message);
+		}
+
+		if ($dump_requests) {
+			file_put_contents($dump_request_file, $request, FILE_APPEND);
+		}
 		// Parse trap message
 	}
 	else
-	{write_log('Null request');}
+	{
+		write_log('Null request');
+	}
 	fclose($read_handle);
 }
 else
-{write_log('Unable to open STDIN!');}
-if ($debug_logging) {write_log('End');}
+{
+	write_log('Unable to open STDIN!');
+}
+
+if ($debug_logging) 
+{
+	write_log('End');
+}
 
 ?>
