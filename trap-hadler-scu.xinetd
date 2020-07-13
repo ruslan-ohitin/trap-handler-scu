@@ -1,0 +1,16 @@
+service smart-console-utility
+{
+        disable         = no
+        id              = trap-handler-scu
+        type            = UNLISTED
+        flags           = IPv4
+        protocol        = udp
+        socket_type     = dgram
+        user            = root
+        wait            = yes
+        server          = /path/to/trap-handler-scu.php
+        port            = 64514
+#       log_type        = FILE /var/log/xinetd-trap-handler-scu.log
+#       log_on_success  = PID HOST
+#       log_on_failure  = HOST
+}
