@@ -17,35 +17,28 @@ $dump_dir		= '/tmp/smart-console-utility';
 $dump_request_file	= $dump_dir.'/'.$req_id.'.request';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function write_log($message)
-{
+function write_log($message) {
 	global $log_file, $logging, $req_id;
-	if ($logging)
-	{
+	if ($logging) {
 		$logging = (file_put_contents($log_file, date('Y-m-d H:i:s  ').'['.$req_id.' '.sprintf('%-14s', $_SERVER['REMOTE_HOST']).'] '.$message."\n", FILE_APPEND) !== false);
 	}
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if ($debug_logging) 
-{
+if ($debug_logging) {
 	write_log('Start');
 }
 
-if ($read_handle = fopen('php://stdin', 'r'))
-{
-	if (($dump_requests) && (!is_dir($dump_dir))) 
-	{
+if ($read_handle = fopen('php://stdin', 'r')) {
+	if (($dump_requests) && (!is_dir($dump_dir))) {
 		mkdir($dump_dir, 644, true);
 		$dump_requests = is_dir($dump_dir);
 	}
 	// Read client request
-	if ($request = fread($read_handle, $request_buffer_size))
-	{
+	if ($request = fread($read_handle, $request_buffer_size)) {
 		// Get trap message
 		preg_match('/[\w\d\s\-\(\)\.]+$/', $request, $matches);
-		if ($matches)
-		{
+		if ($matches) {
 			$trap_message =
 				preg_replace(array('/\([\d]+\)/', '/[\.]+$/'), '', 
 					preg_replace('/[ ]{2,}/', ' ',
@@ -54,9 +47,7 @@ if ($read_handle = fopen('php://stdin', 'r'))
 						)
 					)
 				);
-		} 
-		else 
-		{
+		} else {
 			$trap_message = '';
 		}
 	
@@ -72,20 +63,15 @@ if ($read_handle = fopen('php://stdin', 'r'))
 			file_put_contents($dump_request_file, $request, FILE_APPEND);
 		}
 		// Parse trap message
-	}
-	else
-	{
+	} else {
 		write_log('Null request');
 	}
 	fclose($read_handle);
-}
-else
-{
+} else {
 	write_log('Unable to open STDIN!');
 }
 
-if ($debug_logging) 
-{
+if ($debug_logging) {
 	write_log('End');
 }
 
